@@ -14,7 +14,7 @@ import java.util.List;
 @Data @Builder
 public class AccommodationRes {
 
-    private long id;
+    private Long id;
 
     private String name;
 
