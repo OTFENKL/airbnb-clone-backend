@@ -6,6 +6,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
@@ -19,4 +21,11 @@ public class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedDate;
+
+    @Enumerated(EnumType.STRING)
+    private ActiveType activeType = ActiveType.ACTIVE;
+
+    public void deleteActive() {
+        this.activeType = ActiveType.DELETE;
+    }
 }

@@ -5,6 +5,7 @@ import clone.airbnbpg.accommodation.AccommodationType;
 import clone.airbnbpg.common.entity.Address;
 import lombok.Builder;
 import lombok.Data;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AccommodationDto {
+public class AccommodationReq {
 
     @NotBlank(message = "이름은 공백이거나, null일 수 없습니다.")
     private String name;
@@ -20,39 +21,44 @@ public class AccommodationDto {
     @NotNull
     private String description;
 
-    @NotNull
     private Address address;
 
     @Min(value = 1)
     private int personCount;
 
-    private String accommodationType;
+    private AccommodationType type;
 
     private List<String> imagePath = new ArrayList<>();
 
+    @Min(1_000)
     private long basicPrice;
 
-    private AccommodationType type;
+    @NotBlank
+    private String latitude;
+
+    @NotBlank
+    private String longitude;
 
     @Builder
-    public AccommodationDto(
+    public AccommodationReq(
             @NotBlank String name,
             String description,
             @NotNull Address address,
             @Min(value = 1) int personCount,
-            String accommodationType,
+            AccommodationType type,
             List<String> imagePath,
-            int reviewCount,
             long basicPrice,
-            AccommodationType type) {
+            @NotBlank String latitude,
+            @NotBlank String longitude) {
         this.name = name;
         this.description = description;
         this.address = address;
         this.personCount = personCount;
-        this.accommodationType = accommodationType;
+        this.type = type;
         this.imagePath = imagePath;
         this.basicPrice = basicPrice;
-        this.type = type;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Accommodation toEntity() {

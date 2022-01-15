@@ -1,9 +1,10 @@
 package clone.airbnbpg.common.exception.dto;
 
-import clone.airbnbpg.common.exception.CommonControllerAdvice;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommonException {
 
     private String cause;

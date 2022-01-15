@@ -2,16 +2,18 @@ package clone.airbnbpg.accommodation;
 
 import clone.airbnbpg.common.entity.Address;
 import clone.airbnbpg.common.entity.BaseEntity;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Getter @NoArgsConstructor @ToString
 @Entity
-@Getter @NoArgsConstructor
-@ToString
 public class Accommodation extends BaseEntity {
 
     @Id @GeneratedValue
@@ -25,7 +27,6 @@ public class Accommodation extends BaseEntity {
     @NotNull
     private String description;
 
-    @NotBlank
     private Address address;
 
     @NotBlank
@@ -63,4 +64,5 @@ public class Accommodation extends BaseEntity {
         this.personCount = personCount;
         this.type = type;
     }
+
 }

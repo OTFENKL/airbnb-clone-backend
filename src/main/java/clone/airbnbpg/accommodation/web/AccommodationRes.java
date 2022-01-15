@@ -6,9 +6,6 @@ import clone.airbnbpg.common.entity.Address;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data @Builder
@@ -37,7 +34,6 @@ public class AccommodationRes {
                 .description(accommodation.getDescription())
                 .address(accommodation.getAddress())
                 .personCount(accommodation.getPersonCount())
-//                .imagePath(accommodation.get)
                 .basicPrice(accommodation.getBasicPrice())
                 .type(accommodation.getType())
                 .build();
