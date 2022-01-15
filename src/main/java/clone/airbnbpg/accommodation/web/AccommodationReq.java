@@ -69,6 +69,8 @@ public class AccommodationReq {
                 .basicPrice(basicPrice)
                 .personCount(personCount)
                 .type(type)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
     }
 
@@ -80,6 +82,8 @@ public class AccommodationReq {
                 .basicPrice(accommodation.getBasicPrice())
                 .personCount(accommodation.getPersonCount())
                 .type(accommodation.getType())
+                .latitude(accommodation.getLatitude())
+                .longitude(accommodation.getLongitude())
                 .build();
     }
 }

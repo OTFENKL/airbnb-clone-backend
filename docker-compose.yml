@@ -13,3 +13,12 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=postgres
+  mq:
+    image: rabbitmq:3.9.12-management
+    container_name: airbnb-mq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
