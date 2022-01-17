@@ -3,13 +3,17 @@ package clone.airbnbpg.accommodation.web;
 import clone.airbnbpg.accommodation.Accommodation;
 import clone.airbnbpg.accommodation.AccommodationType;
 import clone.airbnbpg.common.entity.Address;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data @Builder
-public class AccommodationRes {
+@NoArgsConstructor @AllArgsConstructor
+public class AccommodationRes implements Serializable {
 
     private Long id;
 
@@ -17,7 +21,7 @@ public class AccommodationRes {
 
     private String description;
 
-    private Address address;
+//    private Address address;
 
     private int personCount;
 
@@ -32,7 +36,7 @@ public class AccommodationRes {
                 .id(accommodation.getId())
                 .name(accommodation.getName())
                 .description(accommodation.getDescription())
-                .address(accommodation.getAddress())
+//                .address(accommodation.getAddress())
                 .personCount(accommodation.getPersonCount())
                 .basicPrice(accommodation.getBasicPrice())
                 .type(accommodation.getType())

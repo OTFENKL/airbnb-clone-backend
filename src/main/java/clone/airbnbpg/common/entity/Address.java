@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
 @Embeddable
-public class Address {
+public class Address implements Serializable {
 
     @NotBlank
     private String country;

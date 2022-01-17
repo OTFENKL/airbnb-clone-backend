@@ -1,22 +1,25 @@
 package clone.airbnbpg.common.config;
 
-import clone.airbnbpg.common.Receiver;
+import clone.airbnbpg.accommodation.web.AccommodationRes;
+import clone.airbnbpg.common.TestDto;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.ClassMapper;
+import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RabbitMqConfig {
 
-    static final String topicExchangeName = "airbnb-clone-exchange";
+    public static final String topicExchangeName = "airbnb-clone-exchange";
 
     static final String queueName = "airbnb-clone";
 
@@ -47,10 +50,29 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Jackson2JsonMessageConverter jsonMessageConverter() {
+    public MessageConverter jsonMessageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
-//        converter.setAlwaysConvertToInferredType(true);
+        converter.setClassMapper(classMapper());
 
         return converter;
+    }
+
+    @Bean
+    public DefaultClassMapper classMapper() {
+        Map<String, Class<?>> idClassMap = initIdClassMap(AccommodationRes.class);
+
+        DefaultClassMapper classMapper = new DefaultClassMapper();
+        classMapper.setIdClassMapping(idClassMap);
+
+        return classMapper;
+    }
+
+    private Map<String, Class<?>> initIdClassMap(Class ... classes) {
+        Map<String, Class<?>> result = new HashMap<>();
+        for (Class clazz : classes) {
+            result.put(clazz.getSimpleName(), clazz);
+        }
+
+        return result;
     }
 }
