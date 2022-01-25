@@ -4,14 +4,9 @@ import clone.airbnbpg.accommodation.Accommodation;
 import clone.airbnbpg.accommodation.repository.AccommodationRepository;
 import clone.airbnbpg.accommodation.web.AccommodationReq;
 import clone.airbnbpg.accommodation.web.AccommodationRes;
-import clone.airbnbpg.common.TestDto;
-import clone.airbnbpg.common.config.RabbitMqConfig;
+import clone.airbnbpg.common.converter.RabbitSender;
 import clone.airbnbpg.common.exception.dto.ApiException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,14 +19,14 @@ public class AccommodationService {
 
     private final AccommodationRepository accommodationRepository;
 
-    private final RabbitTemplate rabbitTemplate;
+    private final RabbitSender rabbitSender;
 
     public ResponseEntity<?> createAccommodation(AccommodationReq accommodationDto) {
         Accommodation accommodation = accommodationDto.toEntity();
         Accommodation savedAccommodation = accommodationRepository.save(accommodation);
         AccommodationRes accommodationResponseDto = AccommodationRes.of(savedAccommodation);
+        rabbitSender.send(accommodationResponseDto);
 
-        rabbitTemplate.convertAndSend(RabbitMqConfig.topicExchangeName, "airbnb.clone.foo", accommodationResponseDto);
         return new ResponseEntity<>(accommodationResponseDto, HttpStatus.CREATED);
     }
 
