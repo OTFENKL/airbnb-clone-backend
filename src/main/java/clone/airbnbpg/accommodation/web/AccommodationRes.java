@@ -34,7 +34,7 @@ public class AccommodationRes {
                 .id(accommodation.getId())
                 .name(accommodation.getName())
                 .description(accommodation.getDescription())
-//                .address(accommodation.getAddress())
+                .address(accommodation.getAddress())
                 .personCount(accommodation.getPersonCount())
                 .basicPrice(accommodation.getBasicPrice())
                 .type(accommodation.getType())
@@ -42,10 +42,11 @@ public class AccommodationRes {
     }
 
     @Builder
-    public AccommodationRes(Long id, String name, String description, int personCount, List<String> imagePath, long basicPrice, AccommodationType type) {
+    public AccommodationRes(Long id, String name, String description, Address address, int personCount, List<String> imagePath, long basicPrice, AccommodationType type) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.address = address;
         this.personCount = personCount;
         this.imagePath = imagePath;
         this.basicPrice = basicPrice;

@@ -1,11 +1,14 @@
 package clone.airbnbpg.accommodation.web;
 
 import clone.airbnbpg.accommodation.api.AccommodationService;
+import clone.airbnbpg.common.web.ControllerSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static clone.airbnbpg.common.web.ControllerSupport.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/accommodations")
@@ -16,17 +19,19 @@ public class AccommodationController {
 
     @PostMapping
     public ResponseEntity<?> createAccommodation(@RequestBody @Valid AccommodationReq accommodationDto) {
-        return accommodationService.createAccommodation(accommodationDto);
+        return create(accommodationService.createAccommodation(accommodationDto));
     }
 
     @PutMapping("/{accommodationId}")
     public ResponseEntity<?> updateAccommodation(@PathVariable long accommodationId, @RequestBody @Valid AccommodationReq accommodationDto) {
-        return accommodationService.updateAccommodation(accommodationId, accommodationDto);
+        return ok(accommodationService.updateAccommodation(accommodationId, accommodationDto));
     }
 
     @DeleteMapping("/{accommodationId}")
     public ResponseEntity<?> removeAccommodation(@PathVariable long accommodationId)    {
-        return accommodationService.removeAccommodation(accommodationId);
+        accommodationService.removeAccommodation(accommodationId);
+
+        return ok();
     }
 
 }

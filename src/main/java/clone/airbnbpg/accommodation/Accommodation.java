@@ -27,6 +27,7 @@ public class Accommodation extends BaseEntity {
     @NotNull
     private String description;
 
+    @NotNull
     private Address address;
 
     @NotBlank
@@ -49,7 +50,7 @@ public class Accommodation extends BaseEntity {
     public Accommodation(
             @NotBlank String name,
             @NotNull String description,
-            @NotBlank Address address,
+            @NotNull Address address,
             @NotBlank String latitude,
             @NotBlank String longitude,
             @Min(value = 1_000) long basicPrice,

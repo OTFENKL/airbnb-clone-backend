@@ -1,10 +1,7 @@
 package clone.airbnbpg.accommodation;
 
 import clone.airbnbpg.common.BaseTest;
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.generator.BuilderArbitraryGenerator;
 import org.junit.jupiter.api.RepeatedTest;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccommodationTest extends BaseTest {
