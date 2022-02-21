@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
+@Transactional
 class AccommodationServiceTest extends BaseTest {
 
     @MockBean
@@ -40,7 +43,7 @@ class AccommodationServiceTest extends BaseTest {
 
         when(mockAccommodationRepository.save(any(Accommodation.class))).thenReturn(mockAccommodation);
 
-        AccommodationRes responseBody = (AccommodationRes) accommodationService.createAccommodation(accommodationDto).getBody();
+        AccommodationRes responseBody = accommodationService.createAccommodation(accommodationDto);
 
         assertThat(responseBody).isNotNull();
         assertThat(responseBody.getName()).isNotNull();

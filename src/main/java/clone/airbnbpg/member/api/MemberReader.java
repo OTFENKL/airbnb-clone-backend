@@ -1,8 +1,10 @@
 package clone.airbnbpg.member.api;
 
+import clone.airbnbpg.common.exception.dto.ApiException;
 import clone.airbnbpg.member.Member;
 import clone.airbnbpg.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +17,9 @@ public class MemberReader {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findByUsername(String username) {
-        return memberRepository.findByUsername(username);
+    public Member findByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."));
     }
 
     public boolean isExistMember(String username) {

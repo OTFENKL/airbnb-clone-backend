@@ -5,6 +5,7 @@ import clone.airbnbpg.accommodation.AccommodationType;
 import clone.airbnbpg.accommodation.repository.AccommodationRepository;
 import clone.airbnbpg.common.BaseControllerTest;
 import clone.airbnbpg.common.entity.Address;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @Transactional
-@Commit
 class AccommodationControllerTest extends BaseControllerTest {
 
     @Autowired
@@ -61,6 +61,8 @@ class AccommodationControllerTest extends BaseControllerTest {
                 .personCount(48)
                 .type(HOTEL)
                 .basicPrice(10000)
+                .latitude("숙소 위도")
+                .longitude("숙소 경도")
                 .build();
 
         mockMvc.perform(post("/accommodations")
@@ -69,8 +71,7 @@ class AccommodationControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        Accommodation findAccommodation = accommodationRepository.findById(1L)
-                                                    .orElseThrow();
+        Accommodation findAccommodation = accommodationRepository.findAll().get(0);
 
         assertThat(findAccommodation).isNotNull();
         assertThat(findAccommodation.getActiveType()).isEqualTo(ACTIVE);
