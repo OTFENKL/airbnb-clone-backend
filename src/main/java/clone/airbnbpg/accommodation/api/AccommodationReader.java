@@ -2,9 +2,8 @@ package clone.airbnbpg.accommodation.api;
 
 import clone.airbnbpg.accommodation.Accommodation;
 import clone.airbnbpg.accommodation.repository.AccommodationRepository;
-import clone.airbnbpg.common.exception.dto.ApiException;
+import clone.airbnbpg.common.exception.accommodation.AccommodationNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +16,6 @@ public class AccommodationReader {
 
     public Accommodation findById(long accommodationId) {
         return accommodationRepository.findById(accommodationId)
-                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "해당 숙소를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AccommodationNotFoundException("해당 숙소를 찾을 수 없습니다."));
     }
 }

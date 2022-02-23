@@ -1,42 +1,53 @@
 package clone.airbnbpg.common.exception;
 
-import clone.airbnbpg.common.exception.dto.CommonException;
-import clone.airbnbpg.common.exception.dto.FieldException;
-import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
-import org.springframework.http.HttpStatus;
+import clone.airbnbpg.common.exception.accommodation.AccommodationNotFoundException;
+import clone.airbnbpg.common.exception.dto.CommonErrorsRes;
+import clone.airbnbpg.common.exception.dto.FieldErrorRes;
+import clone.airbnbpg.common.exception.member.MemberNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static clone.airbnbpg.common.exception.dto.CommonErrorRes.*;
+import static clone.airbnbpg.common.web.ControllerSupport.*;
 
 @RestControllerAdvice
 public class CommonControllerAdvice {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
-        return new ResponseEntity(new CommonException(extractErrorMsg(e.getBindingResult())), HttpStatus.BAD_REQUEST);
+        return badRequest(of(extractErrorMsg(e.getBindingResult())));
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity<?> constraintViolation(ConstraintViolationException e) {
-        List<FieldException> result = new ArrayList<>();
+        CommonErrorsRes<FieldErrorRes> result = new CommonErrorsRes<>();
+
         for (ConstraintViolation cv : e.getConstraintViolations()) {
             String field = cv.getPropertyPath().toString();
             String cause = cv.getMessage();
 
-            result.add(new FieldException(field, cause));
+            result.add(new FieldErrorRes(field, cause));
         }
-        
-        return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+
+        return badRequest(result);
+    }
+
+    @ExceptionHandler(value = AccommodationNotFoundException.class)
+    public ResponseEntity<?> accommodationNotFound(AccommodationNotFoundException e) {
+        return notFound(of(e.getMessage()));
+    }
+
+    @ExceptionHandler(value = MemberNotFoundException.class)
+    public ResponseEntity<?> memberNotFound(MemberNotFoundException e) {
+        return notFound(of(e.getMessage()));
     }
 
     private String extractErrorMsg(BindingResult bindingResult) {
