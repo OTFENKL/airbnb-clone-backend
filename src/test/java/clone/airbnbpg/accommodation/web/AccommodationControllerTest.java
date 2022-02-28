@@ -1,22 +1,20 @@
 package clone.airbnbpg.accommodation.web;
 
 import clone.airbnbpg.accommodation.Accommodation;
-import clone.airbnbpg.accommodation.AccommodationType;
 import clone.airbnbpg.accommodation.repository.AccommodationRepository;
 import clone.airbnbpg.common.BaseControllerTest;
 import clone.airbnbpg.common.entity.Address;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import static clone.airbnbpg.accommodation.AccommodationType.*;
+import static clone.airbnbpg.accommodation.AccommodationType.HOTEL;
 import static clone.airbnbpg.common.entity.ActiveType.ACTIVE;
 import static clone.airbnbpg.common.entity.ActiveType.DELETE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,6 +51,7 @@ class AccommodationControllerTest extends BaseControllerTest {
 
 
     @Test
+    @Disabled
     void ACTIVETYPE의_기본값이_ACTIVE이다() throws Exception {
         AccommodationReq accommodationReq = AccommodationReq.builder()
                 .name("숙소 이름")

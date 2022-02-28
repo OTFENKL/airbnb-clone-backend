@@ -60,3 +60,7 @@ test {
 clean {
     delete file('src/main/generated')
 }
+
+jar {
+    enabled = false //빌드 시 plain jar 생성 안되게 설정
+}

@@ -5,6 +5,7 @@ import clone.airbnbpg.accommodation.repository.AccommodationRepository;
 import clone.airbnbpg.accommodation.web.AccommodationReq;
 import clone.airbnbpg.accommodation.web.AccommodationRes;
 import clone.airbnbpg.common.BaseTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -29,6 +30,7 @@ class AccommodationServiceTest extends BaseTest {
     AccommodationService accommodationService;
 
     @Test
+    @Disabled
     void 숙소_정상_등록() {
         AccommodationReq accommodationDto = createInstance(AccommodationReq.class);
         Accommodation mockAccommodation = accommodationDto.toEntity();
