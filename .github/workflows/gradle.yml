@@ -7,41 +7,54 @@
 
 name: Java CI with Gradle
 
+env:
+  PROJECT_NAME: airbnb-clone-pg
+  CODEDEPLOY_APPLICATION_NAME: airbnb-clone-codedeploy
+  CODEDEPLOY_DEPLOYMENT_GROUP_NAME: airbnb-clone-codedeploy
+
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Build with Gradle
-      run: ./gradlew build
-    
-    - name: Make tar file
-      run: tar -cpvzf ./$GITHUB_SHA.tgz *
-      shell: bash
-      
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
-        
-    - name: Upload at S3
-      run: |
-        aws s3 cp \
-          --region ap-northeast-2 \
-          $GITHUB_SHA.tgz s3://${{ secrets.S3_BUCKET_NAME }}/$GITHUB_SHA.tgz
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Make tar file
+        run: tar -cpvzf ./$GITHUB_SHA.tgz *
+        shell: bash
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload at S3
+        run: |
+          aws s3 cp \
+            --region ap-northeast-2 \
+            $GITHUB_SHA.tgz s3://${{ secrets.S3_BUCKET_NAME }}/$PROJECT_NAME/$GITHUB_SHA.tgz
+
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name $CODEDEPLOY_APPLICATION_NAME \
+            --file-exists-behavior OVERWRITE \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name $CODEDEPLOY_DEPLOYMENT_GROUP_NAME \
+            --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},bundleType=tgz,key=$PROJECT_NAME/$GITHUB_SHA.tgz
