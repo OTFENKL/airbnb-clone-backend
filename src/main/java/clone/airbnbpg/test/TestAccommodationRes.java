@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -57,21 +56,16 @@ public class TestAccommodationRes {
         this.longitude = longitude;
     }
 
-    public static List<TestAccommodationRes> creates(int pageSize, int pageNumber) {
-        TestAccommodationRes[] accommodations = createBaseAccommodationListRes();
+    public static List<TestAccommodationRes> creates(int pageSize, int pageNumber, int maxCount) {
+        TestAccommodationRes[] accommodations = createBaseAccommodationListRes(maxCount);
 
-        System.out.println(Arrays.toString(accommodations));
         int offset = (pageSize * pageNumber);
 
-        System.out.println("pageSize = " + pageSize);
-        System.out.println("pageNumber = " + pageNumber);
         List<TestAccommodationRes> result = new ArrayList<>();
         for (int i = offset; i < (offset + pageSize); i++) {
             TestAccommodationRes accommodation = accommodations[i];
             result.add(accommodation);
         }
-
-        System.out.println("result = " + result);
 
         return result;
     }
@@ -96,7 +90,7 @@ public class TestAccommodationRes {
                 .build();
     }
 
-    private static TestAccommodationRes[] createBaseAccommodationListRes() {
+    private static TestAccommodationRes[] createBaseAccommodationListRes(int max) {
         TestAccommodationRes[] accommodations = new TestAccommodationRes[1000];
 
         for (int i = 0; i < 1000; i++) {

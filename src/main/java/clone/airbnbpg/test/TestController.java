@@ -17,15 +17,17 @@ public class TestController {
 
     @GetMapping("/accommodations")
     public ResponseEntity<?> get(Pageable pageable) {
-        int pageSize = pageable.getPageSize();
-        int pageNumber = pageable.getPageNumber();
-        List<TestAccommodationRes> data = TestAccommodationRes.creates(pageSize, pageNumber);
+        int maxCount = 1000;
+        int pageSize = pageable.getPageSize() > maxCount ? maxCount : pageable.getPageSize();;
+        int pageNumber = pageable.getPageNumber() > maxCount ? maxCount : pageable.getPageNumber();
+
+        List<TestAccommodationRes> data = TestAccommodationRes.creates(pageSize, pageNumber, maxCount);
 
         TestAccommodationListRes result = TestAccommodationListRes.builder()
                 .accommodationResList(data)
                 .pageSize(pageSize)
                 .pageNumber(pageNumber)
-                .totalCount(1000)
+                .totalCount(maxCount)
                 .build();
 
         return ResponseEntity.ok(result);
